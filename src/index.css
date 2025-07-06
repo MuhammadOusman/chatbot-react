@@ -1,0 +1,524 @@
+/* src/index.css - FULL AND COMPLETE CSS */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* Global Styles & Body */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #a8dadc 0%, #457b9d 100%); /* New background gradient */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    color: #333;
+    overflow: hidden; /* Ensure full viewport and prevent body scroll */
+    -webkit-font-smoothing: antialiased; /* Smoother fonts on WebKit browsers */
+    -moz-osx-font-smoothing: grayscale; /* Smoother fonts on Firefox */
+}
+
+#root {
+    width: 100%;
+    height: 100vh; /* Use 100vh for full screen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Chatbot Container */
+.chatbot-container {
+    background-color: #fff;
+    border-radius: 20px; /* More rounded corners */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); /* Deeper shadow */
+    width: 90%;
+    max-width: 650px; /* Slightly wider */
+    height: 90vh; /* Adjusted for better fit on screen */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle white border */
+}
+
+/* Chat Header */
+.chat-header {
+    background: linear-gradient(45deg, #8b5cf6, #5c62fa); /* Vibrant gradient header */
+    color: white;
+    padding: 20px 25px; /* Increased padding */
+    text-align: center;
+    font-size: 1.5em; /* Larger title */
+    font-weight: 700;
+    border-top-left-radius: 18px; /* Match container border-radius */
+    border-top-right-radius: 18px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* More prominent shadow */
+    letter-spacing: 0.5px;
+    display: flex; /* Make it a flex container */
+    justify-content: space-between; /* Space out title and controls */
+    align-items: center;
+    position: relative;
+}
+
+.chat-header h3 {
+    margin: 0; /* Remove default margin from h3 */
+    flex-grow: 1; /* Allow title to take available space */
+}
+
+.settings-icons {
+    display: flex;
+    gap: 10px; /* Space between icons */
+}
+
+.control-button {
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent button */
+    border: none;
+    border-radius: 50%; /* Circle shape */
+    width: 38px;
+    height: 38px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    color: white;
+    font-size: 1.1em;
+    flex-shrink: 0; /* Prevent shrinking when space is tight */
+}
+
+.control-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.control-button:active {
+    transform: translateY(0);
+}
+
+.control-button.stop-speech-button {
+    border-radius: 20px; /* More of a pill shape for "Stop" text */
+    padding: 0 12px; /* Adjust padding for text */
+    width: auto; /* Auto width based on content */
+    font-size: 0.9em; /* Smaller font for stop */
+    background: rgba(255, 255, 255, 0.3); /* Slightly stronger background */
+}
+.control-button.stop-speech-button:hover {
+     background: rgba(255, 255, 255, 0.4);
+}
+
+/* Chat Messages Area */
+.chat-messages {
+    flex-grow: 1;
+    padding: 20px 25px;
+    overflow-y: auto;
+    background-color: #f8faff; /* Lighter background for messages */
+    scroll-behavior: smooth;
+    transition: background-color 0.3s ease;
+}
+
+/* Individual Messages */
+.message {
+    display: flex;
+    margin-bottom: 20px; /* More spacing */
+    align-items: flex-end; /* Align avatars and bubbles */
+    opacity: 0; /* For fade-in animation */
+    animation: fadeIn 0.5s forwards ease-out; /* Apply fade-in with ease-out */
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px); /* More pronounced initial position */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Make messages slightly delay appearance for a cool effect */
+.message:not(.loading-message) { /* Don't delay the typing indicator */
+    animation-delay: 0.1s; 
+}
+.message:last-child {
+    animation-delay: 0.2s; /* Last message appears a bit later for flow */
+}
+
+
+.user-message {
+    justify-content: flex-end;
+    margin-left: auto;
+    flex-direction: row-reverse; /* Put avatar on the right */
+}
+
+.bot-message {
+    justify-content: flex-start;
+    margin-right: auto;
+    flex-direction: row; /* Put avatar on the left */
+}
+
+/* Message Bubbles */
+.message p {
+    padding: 15px 22px; /* Increased padding */
+    border-radius: 25px; /* More rounded bubbles */
+    line-height: 1.6;
+    word-wrap: break-word;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Smoother shadow */
+    position: relative;
+    font-size: 1em; /* Slightly larger text */
+    max-width: calc(100% - 70px); /* Adjust max-width considering avatar + margins */
+}
+
+.user-message p {
+    background-color: #6C63FF; /* Keep this vibrant purple */
+    color: white;
+    border-bottom-right-radius: 8px; /* Slightly more squarish bottom corner */
+}
+
+.bot-message p {
+    background-color: #ffffff;
+    color: #333;
+    border: 1px solid #e0e0e0; /* Softer border */
+    border-bottom-left-radius: 8px; /* Slightly more squarish bottom corner */
+}
+
+/* Avatars */
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #fff;
+    flex-shrink: 0; /* Prevent avatar from shrinking */
+    margin: 0 10px; /* Space between avatar and message */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* More visible shadow for avatar */
+    text-transform: uppercase;
+}
+
+.user-message .avatar {
+    background-color: #6C63FF;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.bot-message .avatar {
+    background-color: #457b9d; /* Bot's distinct avatar color */
+    margin-right: 10px;
+    margin-left: 0;
+}
+
+/* Input Area */
+.chat-input-area {
+    display: flex;
+    padding: 15px 25px;
+    border-top: 1px solid #eee;
+    background-color: #fff;
+    gap: 10px; /* Space between input and buttons */
+    align-items: center; /* Vertically align items */
+}
+
+/* Mic Button */
+.mic-button {
+    background-color: #6c757d; /* Grey for mic */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px; /* Larger circular button */
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    font-size: 1.4em;
+    flex-shrink: 0; /* Prevent shrinking */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.mic-button:hover {
+    background-color: #5a6268;
+    transform: translateY(-1px);
+}
+
+.mic-button.listening {
+    background-color: #dc3545; /* Red when listening */
+    animation: pulse 1.5s infinite;
+}
+
+.mic-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(220, 53, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 53, 69, 0);
+    }
+}
+
+/* User Input Field */
+#user-input {
+    flex-grow: 1;
+    padding: 14px 22px; /* Increased padding */
+    border: 1px solid #ccddee; /* Softer border color */
+    border-radius: 30px; /* More rounded */
+    font-size: 1.05em;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Inner shadow for depth */
+    background-color: #fcfdff; /* Very slight off-white */
+}
+
+#user-input:focus {
+    border-color: #5c62fa; /* Highlight color on focus */
+    box-shadow: 0 0 0 3px rgba(92, 98, 250, 0.2), inset 0 1px 3px rgba(0, 0, 0, 0.05); /* Glow effect */
+}
+
+#user-input::placeholder {
+    color: #999;
+}
+
+#user-input:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/* Send Button */
+#send-button {
+    background: linear-gradient(45deg, #8b5cf6, #5c62fa); /* Gradient for button */
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 14px 28px; /* Larger clickable area */
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content */
+    gap: 8px; /* Space for icon and text */
+    flex-shrink: 0;
+}
+
+#send-button:hover {
+    background: linear-gradient(45deg, #7c4bdf, #4c54ee); /* Darker gradient on hover */
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+#send-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#send-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Send Button Icon */
+#send-button svg {
+    font-size: 1.3em; /* Size the icon */
+    position: relative; /* For precise positioning */
+}
+
+
+/* Loading "Typing..." Message */
+.loading-message {
+    animation: none !important; /* Prevent initial fade-in on this */
+}
+.loading-message p {
+    background-color: #f0f0f0;
+    color: #666;
+    display: inline-flex; /* Use flex for p to align content */
+    align-items: flex-end; /* Align dots with text baseline */
+    padding-right: 0; /* Remove right padding as ellipsis uses its own space */
+}
+
+/* Typing ellipsis animation */
+.loading-message p::after {
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: bottom;
+    animation: ellipsis 1.2s infinite steps(4, end); /* steps(4) for crisp dot transitions */
+    content: "."; /* Default dot, JS might set a text first */
+    /* Dynamically adjust width for ellipsis effect, not character by character */
+    width: 0em; /* hides the initial . */
+}
+/* Keyframes for ellipsis */
+@keyframes ellipsis {
+    0%   { content: "."; width: 0.5em; }
+    25%  { content: ".."; width: 0.7em;}
+    50%  { content: "..."; width: 1em; }
+    75%  { content: "..."; width: 1em; } /* Hold full dots longer */
+    100% { content: "."; width: 0.5em; } /* Back to one dot, then repeat */
+}
+
+
+/* Scrollbar Styles */
+.chat-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+    background: #eef1f6;
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+    background: #8b5cf6; /* Matches gradient */
+    border-radius: 10px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+    background: #6c46d3;
+}
+
+/* Error Message Specific Style */
+.error-message p {
+    background-color: #ffcccc !important; /* Light red background */
+    color: #cc0000 !important; /* Dark red text */
+    border: 1px solid #ffaaaa !important;
+    font-size: 0.9em !important;
+    font-weight: 500;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(255, 0, 0, 0.1);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    body {
+        padding: 10px; /* Some padding for small screens */
+    }
+    .chatbot-container {
+        width: 100%; /* Full width on smaller screens */
+        height: 98vh; /* Slightly smaller to show OS bar */
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+    .chat-header {
+        font-size: 1.3em;
+        padding: 15px 20px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    .chat-messages {
+        padding: 15px 20px;
+    }
+    .message {
+        margin-bottom: 15px; /* Slightly less margin for tighter fit */
+    }
+    .message p {
+        font-size: 0.9em;
+        padding: 12px 18px;
+        border-radius: 20px;
+        max-width: calc(100% - 60px); /* Adjust max-width considering smaller avatar/margins */
+    }
+    .chat-input-area {
+        padding: 12px 15px;
+        flex-wrap: nowrap; /* Prevent wrapping unless forced */
+        gap: 8px;
+    }
+    .mic-button {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2em;
+    }
+    #user-input {
+        flex-grow: 1; /* Allow input to grow */
+        width: auto; /* Remove fixed width to allow flex-grow to work */
+        padding: 12px 18px;
+        font-size: 0.95em;
+    }
+    #send-button {
+        padding: 12px 20px;
+        font-size: 1em;
+        min-width: unset; /* Let it shrink if needed */
+    }
+
+    .avatar {
+        width: 35px;
+        height: 35px;
+        font-size: 1em;
+        margin: 0 8px;
+    }
+
+    /* Smaller spacing for controls on mobile */
+    .settings-icons {
+        gap: 5px;
+    }
+    .control-button {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9em;
+        margin-left: 0; /* No extra margins on mobile */
+    }
+    .control-button.stop-speech-button {
+        padding: 0 8px;
+        font-size: 0.8em;
+    }
+}
+
+/* Adjustments for even smaller screens */
+@media (max-width: 480px) {
+    .chatbot-container {
+        border-radius: 10px;
+    }
+    .chat-header {
+        padding: 12px 15px;
+        font-size: 1.2em;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
+    .chat-messages {
+        padding: 10px 15px;
+    }
+    .chat-input-area {
+        padding: 10px 15px;
+    }
+    .message {
+        margin-bottom: 12px;
+    }
+    .mic-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1em;
+    }
+    #user-input {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+    #send-button {
+        padding: 10px 18px;
+        font-size: 0.9em;
+        gap: 5px;
+    }
+    #send-button svg {
+        font-size: 1.1em;
+    }
+    .avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9em;
+        margin: 0 6px;
+    }
+}

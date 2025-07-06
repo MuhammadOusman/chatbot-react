@@ -1,0 +1,20 @@
+# ai-chatbot-react/netlify.toml
+[build]
+  command = "npm run build" # Your React build command
+  publish = "dist" # The output directory for Vite build
+
+[functions]
+  directory = "netlify/functions" # Where your serverless functions are located
+  node_bundler = "esbuild" # Recommended for faster builds
+
+# Yeh redirects block hata dein jo pehle tha:
+# [[redirects]]
+#   from = "/.netlify/functions/*"
+#   to = "/.netlify/functions/:splat"
+#   status = 200
+
+# Front-end routing ke liye yeh redirect theek hai
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
