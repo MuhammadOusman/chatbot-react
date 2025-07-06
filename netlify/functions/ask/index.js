@@ -1,8 +1,6 @@
-// ai-chatbot-react/netlify/functions/ask/index.js
 const Groq = require("groq-sdk");
 
 exports.handler = async function(event, context) {
-    // Only allow POST requests
     if (event.httpMethod !== 'POST') {
         return {
             statusCode: 405,
@@ -12,7 +10,7 @@ exports.handler = async function(event, context) {
 
     try {
         const groq = new Groq({
-            apiKey: process.env.GROQ_API_KEY, // Access the API key from environment variables
+            apiKey: process.env.GROQ_API_KEY,
         });
 
         const { message } = JSON.parse(event.body);
@@ -35,10 +33,10 @@ exports.handler = async function(event, context) {
                     content: message,
                 },
             ],
-            model: "llama3-8b-8192", // Or "mixtral-8x7b-32768" for potentially better quality
-            temperature: 0.7, // Adjust creativity (0.0 to 1.0)
-            max_tokens: 150, // Limit response length
-            stream: false, // We want the full response at once
+            model: "llama3-8b-8192",
+            temperature: 0.7,
+            max_tokens: 150,
+            stream: false,
         });
 
         const botReply = chatCompletion.choices[0]?.message?.content || "Sorry, I couldn't get a response.";
